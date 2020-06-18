@@ -1,6 +1,6 @@
 # {%= name %}
 
-> {%= description %}
+{%= description %}
 
 {%= _.doc('bagdes.md') %}
 
