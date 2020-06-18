@@ -390,7 +390,7 @@ class Quotation {
           swal("Seu pedido foi enviado, brevemente entraremos em contato!", {
             icon: "success",
           }).then(() => {
-            window.location.replace("/");
+            window.location.replace("/site-piquiatuba/");
           });
         } catch (error) {
           this.setLoading(false);
