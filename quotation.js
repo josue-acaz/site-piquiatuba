@@ -157,6 +157,7 @@ class Quotation {
     // Elements
     this.panelGroup = document.getElementById('accordion');
     this.currentPanel = 'panel-flight-info';
+    this.results = document.getElementById("results");
 
     this.registerHandlers();
   }
@@ -171,7 +172,12 @@ class Quotation {
       const response = await api.get(`/quotation?${query}`);
       this.quotations = response.data;
       this.setLoading(false);
-      this.render(this.quotations, this.searchParams);
+      
+      if(response.data.length > 0) {
+        this.render(this.quotations, this.searchParams);
+      } else {
+        this.noResults();
+      }
     } catch (err) {
       this.setLoading(false);
     }
@@ -194,6 +200,13 @@ class Quotation {
     } else {
       document.getElementById("preloader-search").remove();
     }
+  }
+
+  noResults() {
+    let p = document.createElement("p");
+    p.setAttribute("class", "no-results");
+    p.appendChild(document.createTextNode("Desculpe, mas sua pesquisa não retornou nenhum resultado!"));
+    this.results.appendChild(p);
   }
 
   render(quotations, search_params) {
