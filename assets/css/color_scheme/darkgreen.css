@@ -165,10 +165,6 @@
 	#topNav ul.dropdown-menu { /* submenu border top color */
 		border-top-color:#9DB667;
 	}
-	section.featured-grid div.row>div .ribbon:before,
-	.modal-content {
-		border-top-color:#9DB667;
-	}
 
 	#topNav ul.dropdown-menu {
 		border-color: #9DB667 #fff #fff;

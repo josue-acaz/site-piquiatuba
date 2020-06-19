@@ -7584,7 +7584,7 @@ section.dark .table-striped>tbody>tr:nth-of-type(odd) {
 }
 .modal-content {
 	border:0;
-	border-top:#333 4px solid;
+	border-top:#FFFF 4px solid;
 }
 .modal-dialog {
 	-webkit-border-radius: 3px;

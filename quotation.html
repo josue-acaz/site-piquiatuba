@@ -189,55 +189,100 @@
 			<!-- Modal -->
 			<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Preencha o formulário</h5>
-								<button type="button" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
+
+							<div class="modal-content">
+									<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">Preencha o formulário</h5>
+											<button type="button" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+			
+												<div class="mdc-form-field radio-people">
+														<div class="mdc-radio">
+															<input 
+																class="mdc-radio__native-control" 
+																value="pessoa-fisica" 
+																type="radio" 
+																id="pessoa-fisica" 
+																name="radios" 
+																checked
+															>
+															<div class="mdc-radio__background">
+																<div class="mdc-radio__outer-circle"></div>
+																<div class="mdc-radio__inner-circle"></div>
+															</div>
+															<div class="mdc-radio__ripple"></div>
+														</div>
+														<label for="pessoa-fisica">Pessoa Física</label>
+														<div class="mdc-radio">
+															<input 
+																class="mdc-radio__native-control" 
+																value="pessoa-juridica" 
+																type="radio" 
+																id="pessoa-juridica" 
+																name="radios"
+															>
+															<div class="mdc-radio__background">
+																<div class="mdc-radio__outer-circle"></div>
+																<div class="mdc-radio__inner-circle"></div>
+															</div>
+															<div class="mdc-radio__ripple"></div>
+														</div>
+														<label  for="oneway">Pessoa Jurídica</label>
+													</div>
+			
+											<form id="form-quotation">
+												<div class="form-group">
+													<label for="name">Nome Completo</label>
+													<input 
+														type="text" 
+														class="form-control" 
+														id="name"
+														name="name"
+														placeholder="Seu nome completo"
+														required
+													>
+												</div>
+												<div class="form-group">
+													<label for="email">Email</label>
+													<input 
+														type="email" 
+														class="form-control" 
+														id="email"
+														name="email"
+														placeholder="Seu melhor email" 
+														required
+													>
+												</div>
+												<div class="form-group">
+													<label for="email">Número de Telefone</label>
+													<input 
+														type="text" 
+														class="form-control" 
+														id="phone"
+														name="phone"
+														placeholder="Seu número de telefone" 
+														required
+													>
+												</div>
+												<!--CPF - CNPJ-->
+												<div id="cpf-cnpj" class="form-group">
+													<!--CONTENT HERE-->
+												</div>
+												<!--DOB-->
+												<div id="dob-container" class="form-group">
+													<!--CONTENT HERE-->
+												</div>
+												<div class="modal-actions-buttons">
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+													<button type="submit" class="btn-send">Enviar Cotação</button>
+												</div>
+											</form>
+										</div>
 							</div>
-							<div class="modal-body">
-								<form id="form-quotation">
-									<div class="form-group">
-										<label for="name">Nome Completo</label>
-										<input 
-											type="text" 
-											class="form-control" 
-											id="name"
-											name="name"
-											placeholder="Seu nome completo"
-											required
-										>
-									</div>
-									<div class="form-group">
-										<label for="email">Email</label>
-										<input 
-											type="email" 
-											class="form-control" 
-											id="email"
-											name="email"
-											placeholder="Seu melhor email" 
-											required
-										>
-									</div>
-									<div class="form-group">
-										<label for="email">Número de Telefone</label>
-										<input 
-											type="text" 
-											class="form-control" 
-											id="phone"
-											name="phone"
-											placeholder="Seu número de telefone" 
-											required
-										>
-									</div>
-									<div class="modal-actions-buttons">
-										<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-										<button type="submit" class="btn-send">Enviar Cotação</button>
-									</div>
-								</form>
-							</div>
-						</div>
+
 					</div>
 				</div>
 				

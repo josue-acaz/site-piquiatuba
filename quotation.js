@@ -11,7 +11,138 @@ const form_quotation = document.getElementById("form-quotation");
 const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
 const phoneInput = document.getElementById("phone");
+// Inputs dinâmicos
+let cpfInput = null;
+let cnpjInput = null;
+let dobInput = null;
+// Dinamic labels
+let labelCpf = null;
+let labelCnpj = null;
+let labelDob = null;
 
+// Radio Input (Permite a troca entre Pessoa Física e Pessoa Jurídica)
+const pessoa_fisica = document.getElementById("pessoa-fisica");
+const pessoa_juridica = document.getElementById("pessoa-juridica");
+let isPessoaFisica = true; // Controla a identifação do tipo de pessoa
+
+// Elemento que permite a troca entre cpf e cpnj
+const cpf_cnpj = document.getElementById("cpf-cnpj");
+// Elemento que permite colocar a data de nascimento
+const dob_container = document.getElementById("dob-container");
+// Cria o elemento CPF
+const cpf = (ref_apped) => {
+  let input = document.createElement("input");
+  input.setAttribute("type", "text");
+  input.setAttribute("class", "form-control");
+  input.setAttribute("id", "cpf");
+  input.setAttribute("name", "cpf");
+  input.setAttribute("placeholder", "Informe seu CPF");
+  input.required = true;
+
+  let label = document.createElement("label");
+  label.setAttribute("for", "cpf");
+  label.appendChild(document.createTextNode("CPF"));
+
+  ref_apped.appendChild(label);
+  ref_apped.appendChild(input);
+  $('#cpf').mask('000.000.000-00'); // Cria máscara para o cpf
+
+  cpfInput = document.getElementById("cpf"); // Atribui input
+  labelCpf = label;
+}
+// Cria o elemento CPNJ
+const cpnj = (ref_apped) => {
+  let input = document.createElement("input");
+  input.setAttribute("type", "text");
+  input.setAttribute("class", "form-control");
+  input.setAttribute("id", "cnpj");
+  input.setAttribute("name", "cnpj");
+  input.setAttribute("placeholder", "Informe o CNPJ");
+  input.required = true;
+
+  let label = document.createElement("label");
+  label.setAttribute("for", "cnpj");
+  label.appendChild(document.createTextNode("CNPJ"));
+
+  ref_apped.appendChild(label);
+  ref_apped.appendChild(input);
+  $('#cnpj').mask('00.000.000/0000-00');
+
+  cnpjInput = document.getElementById("cnpj"); // Atribui input
+  labelCnpj = label;
+}
+// Cria o elemento DOB (Data de Nascimento)
+const dob = (ref_apped) => {
+  let input = document.createElement("input");
+  input.setAttribute("type", "text");
+  input.setAttribute("class", "form-control");
+  input.setAttribute("id", "dob");
+  input.setAttribute("name", "dob");
+  input.setAttribute("placeholder", "Data de Nascimento");
+  input.required = true;
+
+  let label = document.createElement("label");
+  label.setAttribute("for", "dob");
+  label.appendChild(document.createTextNode("Data de Nascimento"));
+
+  ref_apped.appendChild(label);
+  ref_apped.appendChild(input);
+  $('#dob').mask('00/00/0000');
+
+  dobInput = document.getElementById("dob");
+  labelDob = label;
+}
+
+// Inicia como Formulário de Pessoa Física
+cpf(cpf_cnpj);
+dob(dob_container);
+
+function handleChangePeopleType() {
+  const value = utils.getRadioVal("radios");
+
+    if(value === 'pessoa-fisica') {
+      // Se os campos forem nulos somente
+      if(!cpfInput && !dobInput) {
+        // Retirar CPNJ se houver, colocar CPF e Data de Nascimento
+        if(cnpjInput) {
+          // remove input
+          cnpjInput.remove(); 
+          cnpjInput = null;
+          // remove label
+          labelCnpj.remove();
+          labelCnpj = null;
+        }
+
+        cpf(cpf_cnpj);
+        dob(dob_container);
+        isPessoaFisica = true;
+      }
+    }
+    if(value === 'pessoa-juridica') {
+      // Somente se cpnj for nulo
+      if(!cnpjInput) {
+        // Retirar CPF, retirar Data de Nascimento e Colocar CNPJ
+        cpfInput.remove(); 
+        cpfInput = null;
+        labelCpf.remove();
+        labelCpf = null;
+
+        dobInput.remove(); 
+        dobInput = null;
+        labelDob.remove();
+        labelDob = null;
+
+        cpnj(cpf_cnpj);
+        isPessoaFisica = false;
+      }
+    }
+}
+
+// Adiciona controladores da troca
+pessoa_fisica.onclick = () => handleChangePeopleType();
+pessoa_juridica.onclick = () => handleChangePeopleType();
+
+// Cria máscara para telefone
 $('#phone').mask('(00)00000-0000');
 
 class Quotation {
@@ -356,7 +487,7 @@ class Quotation {
     });
   }
 
-  sendQuotation(event) {
+  sendQuotation(event, subtotal) {
     event.preventDefault();
 
     // Obter os dados do formulário
@@ -366,9 +497,19 @@ class Quotation {
       phone: phoneInput.value,
     };
 
+    if(isPessoaFisica) { // se for pessoa física
+      user.cpf = cpfInput.value;
+      user.dob = dobInput.value;
+      user.type = "Pessoa Física";
+    } else { // se for pessoa jurídica
+      user.cnpj = cnpjInput.value;
+      user.type = "Pessoa Jurídica";
+    }
+
     this.submitQuotation({
       user,
       stretches: this.quotations,
+      subtotal,
     });
   }
 
@@ -479,7 +620,7 @@ class Quotation {
       checkout.appendChild(buttonSubmit);
 
       checkout_container.appendChild(checkout);
-      form_quotation.onsubmit = (event) => this.sendQuotation(event);
+      form_quotation.onsubmit = (event) => this.sendQuotation(event, subtotal);
     }
   }
 }

@@ -1242,3 +1242,10 @@ div.checkout-scrollbar a {
 .modal-header h5 {
   display: inline;
 }
+
+.radio-people {
+  margin-bottom: 20px;
+}
+.radio-people label {
+  color: #444;
+}

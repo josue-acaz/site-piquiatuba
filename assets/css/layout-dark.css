@@ -127,7 +127,7 @@ section .display-table p {
 		body.grain-grey #header.fixed,
 		body.grain-green #header.fixed,
 		body.grain-orange #header.fixed,
-		body.grain-yellow #header..fixed{
+		body.grain-yellow #header.fixed{
 			background-color:#333;
 		}
 
@@ -1258,7 +1258,7 @@ section .nav-pills>li.active>a:focus {
 	border-bottom-color:rgba(255,255,255,0.2);
 }
 .modal-content {
-	background-color:#444;
+	background-color:#FFFF;
 }
 .modal-title,
 .modal-body,
