@@ -275,13 +275,13 @@ class Quotation {
     rowSpec.setAttribute('class', 'row');
     // company
     let colCompany = document.createElement('div');
-    colCompany.setAttribute('class', 'col-sm-6');
+    colCompany.setAttribute('class', 'col-sm-8');
     colCompany.setAttribute('style', 'height: 26px;');
-    let companyEl = `<img style="width: 10%;" src="assets/images/logo.png" alt="air taxi logo example"> Operado por <strong>Fly Táxi Aéreo</strong>`;
+    let companyEl = `<img style="width: 20%;" src="assets/images/logo.png" alt="air taxi logo example"> Operado por <strong>Piquiatuba Táxi Aéreo</strong>`;
     colCompany.innerHTML = companyEl;
     // flight price
     let colFlightPrice = document.createElement('div');
-    colFlightPrice.setAttribute('class', 'col-sm-6');
+    colFlightPrice.setAttribute('class', 'col-sm-4');
     colFlightPrice.setAttribute('style', 'height: 26px;');
     let price = `<p class="price-flight"><strong>${utils.formatCurrency(aircraft.price)}</strong></p>`;
     colFlightPrice.innerHTML = price;

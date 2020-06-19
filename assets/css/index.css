@@ -1010,6 +1010,10 @@ div.scrollbar a {
   background-color: #4CAF50;
 }
 
+.panel-body p {
+  margin: 5px;
+}
+
 .btn-add {
   display: inline-block;
 	padding: 18px;
@@ -1020,6 +1024,7 @@ div.scrollbar a {
 	font: 700 0.75rem/0 "Roboto", sans-serif;
 	text-decoration: none;
   transition: all 0.2s;
+  margin-top: 15px;
 }
 
 .btn-submit:hover {
