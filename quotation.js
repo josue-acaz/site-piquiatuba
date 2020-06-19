@@ -458,7 +458,7 @@ class Quotation {
           <p><p class="p-title">Origem:</p> ${origin.name.split("/")[1] ? utils.titleize(origin.name.split("/")[1]) : utils.titleize(origin.name)}, ${utils.titleize(origin.city)}, ${origin.uf}</p>
           <p><p class="p-title">Destino:</p> ${destination.name.split("/")[1] ? utils.titleize(destination.name.split("/")[1]) : utils.titleize(destination.name)}, ${utils.titleize(destination.city)}, ${destination.uf}</p>
           <p><p class="p-title">Preço:</p> ${utils.formatCurrency(aircraft.price)}</p>
-          <p><p class="p-title">Tempo de Viagem:</p> 2hrs</p>
+          <p><p class="p-title">Tempo de Viagem:</p> ${utils.minsToHHMMSS(aircraft.flight_time).split(":")[0]}h ${utils.minsToHHMMSS(aircraft.flight_time).split(":")[1]}min</p>
         </div>`;
 
         let removeItemBtn = document.createElement("button");
