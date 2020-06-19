@@ -90,7 +90,7 @@ class Quotation {
       colTime.setAttribute('class', 'col-sm-3');
       let pTime = document.createElement('p');
       pTime.setAttribute('style', 'font-size: 14px;');
-      pTime.appendChild(document.createTextNode(`Aproximadamente ${'1h'}`));
+      pTime.appendChild(document.createTextNode(`Aproximadamente ${utils.minsToHHMMSS(aircrafts[0].flight_time).split(":")[0]}h ${utils.minsToHHMMSS(aircrafts[0].flight_time).split(":")[1]}min`));
       colTime.appendChild(pTime);
       // col price
       let colPrice = document.createElement('div');
