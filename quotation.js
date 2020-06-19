@@ -288,9 +288,11 @@ class Quotation {
     rowSpec.appendChild(colCompany);
     rowSpec.appendChild(colFlightPrice);
     // Button end
-    let btn = document.createElement('button');
+    let btn = document.createElement('a');
+    btn.setAttribute("href", "#");
     btn.setAttribute('class', 'btn btn-add');
     btn.appendChild(document.createTextNode('SELECIONAR'));
+
     btn.onclick = () => {
       this.checkout = [];
       this.checkout.push({
