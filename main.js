@@ -6,6 +6,7 @@ import utils from './utils';
 let oneway = document.getElementById("oneway");
 let roundtrip = document.getElementById("roundtrip");
 let passengers = document.getElementById("passengers");
+passengers.value = 1;
 
 // Mostrar erros
 let snackbar = document.getElementById("snackbar");
@@ -29,7 +30,7 @@ class App {
     this.cityDestinationValue = null;
     this.departureDateTime = null;
     this.returnDateTime = null;
-    this.passengers = null;
+    this.passengers = 1;
   }
 
   registerHandlers() {
@@ -219,16 +220,17 @@ class App {
   handleOriginSelected(value) {
     this.cityOriginValue = value.name;
   }
+
   // Set destination value
   handleDestinationSelected(value) {
     this.cityDestinationValue = value.name;
   }
 }
 
- const app = new App();
+const app = new App();
+roundtrip.onload = () => { window.location.reload(); }
 
 /**Out scripts */
-
 // Cidade de Origem
 var $select_origin = $('#select-origin').selectize({
   valueField: 'name', // É o valor que vai ser retornado do input
