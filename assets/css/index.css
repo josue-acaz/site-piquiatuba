@@ -1249,3 +1249,9 @@ div.checkout-scrollbar a {
 .radio-people label {
   color: #444;
 }
+
+.trip-title {
+  font-weight: normal;
+  font-size: 20px;
+  color: #444;
+}

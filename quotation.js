@@ -232,16 +232,31 @@ class Quotation {
       // col time
       let colTime = document.createElement('div');
       colTime.setAttribute('class', 'col-sm-3');
+
+      let pTimeTxt = document.createElement('p');
+      pTimeTxt.appendChild(document.createTextNode("Tempo de viagem"));
+      pTimeTxt.setAttribute('class', 'trip-title');
+
       let pTime = document.createElement('p');
       pTime.setAttribute('style', 'font-size: 14px;');
-      pTime.appendChild(document.createTextNode(`Aproximadamente ${utils.minsToHHMMSS(aircrafts[0].flight_time).split(":")[0]}h ${utils.minsToHHMMSS(aircrafts[0].flight_time).split(":")[1]}min`));
+      pTime.appendChild(document.createTextNode(`${utils.minsToHHMMSS(aircrafts[0].flight_time).split(":")[0]}h ${utils.minsToHHMMSS(aircrafts[0].flight_time).split(":")[1]}min`));
+      
+      colTime.appendChild(pTimeTxt);
       colTime.appendChild(pTime);
+
       // col price
       let colPrice = document.createElement('div');
       colPrice.setAttribute('class', 'col-sm-3');
       let pPrice = document.createElement('p');
+
+      let pPriceTxt = document.createElement('p');
+      pPriceTxt.appendChild(document.createTextNode("A partir de"));
+      pPriceTxt.setAttribute('class', 'trip-title');
+
       pPrice.setAttribute('style', 'font-size: 14px;');
-      pPrice.appendChild(document.createTextNode(`A partir de ${utils.formatCurrency(aircrafts[0].price)}`));
+      pPrice.appendChild(document.createTextNode(`${utils.formatCurrency(aircrafts[0].price)}`));
+      
+      colPrice.appendChild(pPriceTxt);
       colPrice.appendChild(pPrice);
       // row
       let rowTitle = document.createElement('div');
@@ -289,7 +304,7 @@ class Quotation {
         let infoContent = `<p class="title-aircraft-details"><strong>${aircraft.name}</strong></p>
         <p class="info-details"><strong>Passageiros:</strong> ${aircraft.passengers}</p>
         <p class="info-details"><strong>Velocidade de cruzeiro: </strong>${aircraft.cruising_speed} Km/h</p>
-        <p class="info-price">por <strong>${utils.formatCurrency(aircraft.price)}</strong></p>`;
+        <p class="info-price">${utils.formatCurrency(aircraft.price)}</p>`;
 
         let info = document.createElement('div');
         info.setAttribute('class', 'aircraft-details');
