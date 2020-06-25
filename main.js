@@ -21,15 +21,15 @@ class App {
     this.originEl = document.getElementById("city-origin");
     this.destinationEl = document.getElementById("city-destination");
     this.colDepartureDate = document.getElementById("col-departure-date");
-    this.colReturnDate = document.getElementById("col-return-date");
-    this.returnDateEl = document.getElementById("return-date-el");
+    //this.colReturnDate = document.getElementById("col-return-date");
+    //this.returnDateEl = document.getElementById("return-date-el");
     this.colPassengers = document.getElementById("col-passengers");
 
     // Values
     this.cityOriginValue = null;
     this.cityDestinationValue = null;
     this.departureDateTime = null;
-    this.returnDateTime = null;
+    //this.returnDateTime = null;
     this.passengers = 1;
   }
 
@@ -50,7 +50,7 @@ class App {
       origin: this.cityOriginValue,
       destination: this.cityDestinationValue,
       departure_date: this.departureDateTime,
-      return_date: this.returnDateTime,
+      //return_date: this.returnDateTime,
       passengers_: parseInt(this.passengers),
       trip_mode: utils.getRadioVal("radios"),
     };
@@ -72,9 +72,9 @@ class App {
     }
 
     // Data de retorno
-    if(!data.return_date && isRoundTrip) {
+    /*if(!data.return_date && isRoundTrip) {
       this.colReturnDate.classList.toggle("error-input");
-    }
+    }*/
 
     // Número de passageiros
     if(!data.passengers_) {
@@ -83,11 +83,11 @@ class App {
 
     // Mostra snackbar "Preencha todos os campos" se os campos estão vazios
     if(
-      isRoundTrip ? !data.origin || 
+      /*isRoundTrip ? !data.origin || 
       !data.destination || 
       !data.departure_date || 
       !data.return_date || 
-      !data.passengers_ :
+      !data.passengers_ :*/
 
       !data.origin || 
       !data.destination || 
@@ -102,14 +102,14 @@ class App {
       // validar hora da data da ida
       if(!this.validateDepartureDate(data.departure_date, 4)) {
         this.showSnackbar("A data da ida deve anteceder em até 4 horas a data atual!");
-      } else if(isRoundTrip && !this.validateReturnDateOnDepartureDate(data.departure_date, data.return_date, 3)) {
+      } /*else if(isRoundTrip && !this.validateReturnDateOnDepartureDate(data.departure_date, data.return_date, 3)) {
         this.showSnackbar("A data da volta deve ser superior em até 3 horas a data da partida!");
-      } else {
+      }*/ else {
         this.search({
           origin: `${data.origin.split(" • ")[0]}, ${data.origin.split(" • ")[1]}`,
           destination: `${data.destination.split(" • ")[0]}, ${data.destination.split(" • ")[1]}`,
           departure_date: data.departure_date,
-          return_date: data.return_date,
+          //return_date: data.return_date,
           passengers_: data.passengers_,
           //trip_mode: data.trip_mode,
         });
@@ -148,7 +148,7 @@ class App {
   }
 
   // Verifica se a data de retorno é maior em até 3 horas da data de partida
-  validateReturnDateOnDepartureDate(departureDate, returnDate, hours) {
+  /*validateReturnDateOnDepartureDate(departureDate, returnDate, hours) {
     let isValid = true;
 
     const d_date = new Date(departureDate);
@@ -165,7 +165,7 @@ class App {
     console.log(isValid);
 
     return isValid;
-  }
+  }*/
 
   // Set origin value
   handleOriginSelected(value) {
@@ -277,14 +277,14 @@ const departureDatePicker = flatpickr(".departure-datetime", {
     // Altera o valor da data de partida
     app.departureDateTime = dateStr;
     // Configura como a data mínima para a data da volta
-    if(isRoundTrip) {
+    /*if(isRoundTrip) {
       returnDatePicker.set("minDate", dateStr.split(" ")[0]);
-    }
+    }*/
   }
 });
 
 // Data e hora da volta
-let returnDatePicker = flatpickr(".return-datetime", {
+/*let returnDatePicker = flatpickr(".return-datetime", {
   enableTime: true,
   time_24hr: true,
   minDate: "today",
@@ -292,4 +292,4 @@ let returnDatePicker = flatpickr(".return-datetime", {
     app.returnDateTime = dateStr;
     departureDatePicker.set("maxDate", dateStr.split(" ")[0]);
   }
-});
+});*/
