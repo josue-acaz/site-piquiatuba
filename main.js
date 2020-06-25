@@ -3,8 +3,8 @@ import flatpickr from 'flatpickr';
 import api from './api';
 import utils from './utils';
 
-let oneway = document.getElementById("oneway");
-let roundtrip = document.getElementById("roundtrip");
+//let oneway = document.getElementById("oneway");
+//let roundtrip = document.getElementById("roundtrip");
 let passengers = document.getElementById("passengers");
 passengers.value = 1;
 
@@ -40,8 +40,8 @@ class App {
       this.handleSubmit();
     }
     
-    oneway.onclick = () => this.handleTripMode();
-    roundtrip.onclick = () => this.handleTripMode();
+    //oneway.onclick = () => this.handleTripMode();
+    //roundtrip.onclick = () => this.handleTripMode();
     passengers.onchange = (event) => this.passengers = event.target.value;
   }
 
@@ -160,7 +160,7 @@ class App {
           departure_date: data.departure_date,
           return_date: data.return_date,
           passengers_: data.passengers_,
-          trip_mode: data.trip_mode,
+          //trip_mode: data.trip_mode,
         });
       }
     }
@@ -228,7 +228,7 @@ class App {
 }
 
 const app = new App();
-roundtrip.onload = () => { window.location.reload(); }
+//roundtrip.onload = () => { window.location.reload(); }
 
 /**Out scripts */
 // Cidade de Origem

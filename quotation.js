@@ -152,7 +152,7 @@ class Quotation {
 
     this.quotations = [];
     this.checkout = []; // Guarda os trechos escolhidos
-    this.tripMode = this.searchParams.trip_mode;
+    //this.tripMode = this.searchParams.trip_mode;
 
     // Elements
     this.panelGroup = document.getElementById('accordion');
@@ -461,14 +461,14 @@ class Quotation {
         aircraft,
       });
 
-      if(this.tripMode === "roundtrip") {
+      /*if(this.tripMode === "roundtrip") {
         this.checkout.push({
           id: id+1,
           origin: destination,
           destination: origin,
           aircraft,
         });
-      }
+      }*/
 
       this.showCheckout();
     }
@@ -596,8 +596,8 @@ class Quotation {
       title.appendChild(document.createTextNode("Resumo do pedido"));
 
       // Os itens são adicionados aqui dentro
-      let scrollbar = document.createElement("div");
-      scrollbar.setAttribute("class", "checkout-scrollbar");
+      //let scrollbar = document.createElement("div");
+      //scrollbar.setAttribute("class", "checkout-scrollbar");
 
       let subtotalEl = document.createElement("p");
       subtotalEl.setAttribute("class", "sub-total");
@@ -630,20 +630,23 @@ class Quotation {
           <p><p class="p-title">Tempo de Viagem:</p> ${utils.minsToHHMMSS(aircraft.flight_time).split(":")[0]}h ${utils.minsToHHMMSS(aircraft.flight_time).split(":")[1]}min</p>
         </div>`;
 
-        let removeItemBtn = document.createElement("button");
-        removeItemBtn.setAttribute("class", "removeItemBtn");
-        removeItemBtn.appendChild(document.createTextNode("Remover"));
-        removeItemBtn.onclick = () => this.removeItemFromCheckout(id);
+        //let removeItemBtn = document.createElement("button");
+        //removeItemBtn.setAttribute("class", "removeItemBtn");
+        //removeItemBtn.appendChild(document.createTextNode("Remover"));
+        //removeItemBtn.onclick = () => this.removeItemFromCheckout(id);
 
-        checkoutItem.appendChild(removeItemBtn);
+        //checkoutItem.appendChild(removeItemBtn);
 
-        scrollbar.appendChild(checkoutItem);
+        //scrollbar.appendChild(checkoutItem);
+        
+        //@1
+        checkout.appendChild(checkoutItem);
       });
 
       // Mostra o total a pagar
       subtotalEl.appendChild(document.createTextNode(`Subtotal: ${utils.formatCurrency(subtotal)}`));
 
-      checkout.appendChild(scrollbar);
+      // checkout.appendChild(scrollbar); // trocar por @1
       checkout.appendChild(subtotalEl);
       checkout.appendChild(buttonSubmit);
 
