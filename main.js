@@ -40,56 +40,7 @@ class App {
       this.handleSubmit();
     }
     
-    //oneway.onclick = () => this.handleTripMode();
-    //roundtrip.onclick = () => this.handleTripMode();
     passengers.onchange = (event) => this.passengers = event.target.value;
-  }
-
-  handleTripMode() {
-    const value = utils.getRadioVal("radios");
-
-    if(value === 'oneway') {
-      // Remover instância datepicker return date
-      returnDatePicker.destroy();
-      isRoundTrip = false; // Desativa controles para return date
-
-      this.returnDateEl.remove();
-      this.colReturnDate.setAttribute("class", "");
-
-      this.colDepartureDate.setAttribute("class", "col-sm-6");
-      this.colPassengers.setAttribute("class", "col-sm-6");
-
-      // Restaura data máxima da data da ida, para o padrão
-      departureDatePicker.set("maxDate", (new Date()).fp_incr(365));
-      // Remove elemento da data da volta
-      this.returnDateTime = null;
-    }
-    if(value === 'roundtrip') {
-      this.colReturnDate.setAttribute("class", "col-sm-4");
-      this.colDepartureDate.setAttribute("class", "col-sm-4");
-      this.colPassengers.setAttribute("class", "col-sm-4");
-      this.colReturnDate.innerHTML = `
-      <div class="form-group" id="return-date-el">
-        <label class="label-input-search" for="return-date">VOLTA</label>
-        <div class="input-with-icon" id="return-date-input">
-            <input type="datetime" class="return-datetime" id="return-datetime" placeholder="Selecione a data da volta">
-            <i class="fas fa-calendar-day"></i>
-        </div>
-      </div>
-      `;
-      this.returnDateEl = document.getElementById("return-date-el");
-
-      // Reatribuir datepicker return date
-      returnDatePicker = flatpickr(".return-datetime", {
-        enableTime: true,
-        time_24hr: true,
-        minDate: "today",
-        onClose: (selectedDates, dateStr, instance) => {
-          app.returnDateTime = dateStr;
-          departureDatePicker.set("maxDate", dateStr.split(" ")[0]);
-        }
-      });
-    }
   }
 
   // Validate form and submit
@@ -228,7 +179,6 @@ class App {
 }
 
 const app = new App();
-//roundtrip.onload = () => { window.location.reload(); }
 
 /**Out scripts */
 // Cidade de Origem
