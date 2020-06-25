@@ -519,7 +519,6 @@ div.scrollbar a {
 .title-aircraft-details {
   color: #474545;
   margin: 0;
-  padding: 0;
 }
 
 .info-details {
@@ -985,8 +984,12 @@ div.scrollbar a {
 }
 
 .aircraft-thumbnail img {
-  height: 100%;
   border-radius: 5px;
+  background: none;
+  border-radius: 5px;
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
 }
 
 .panel-default {
@@ -1252,6 +1255,19 @@ div.checkout-scrollbar a {
 
 .trip-title {
   font-weight: normal;
-  font-size: 20px;
-  color: #444;
+  font-size: 16px;
+  color: #003f7d;
+}
+
+.p_time_design {
+  font-size: 22px;
+  font-weight: normal;
+}
+
+.p_airport_reference {
+  display: inline-flex;
+  font-size: 18px;
+  color: #003f7d;
+  font-weight: normal;
+  margin: 0;
 }

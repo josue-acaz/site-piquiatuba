@@ -222,8 +222,8 @@ class Quotation {
       pStretch.innerHTML = pStretchContent;
       let pAerodrome = document.createElement('p');
       pAerodrome.setAttribute("class", "stretch");
-      let pAerodromeContent = `<p class="stretch"><strong>DE</strong> ${origin.name.split("/")[1] ? utils.titleize(origin.name.split("/")[1]) : utils.titleize(origin.name)}</p>
-      <p class="stretch"><strong>PARA</strong> ${destination.name.split("/")[1] ? utils.titleize(destination.name.split("/")[1]) : utils.titleize(destination.name)}</p>`;
+      let pAerodromeContent = `<div class="stretch"><div class="p_airport_reference" style="display:inline-block">DE</div> ${origin.name.split("/")[1] ? utils.titleize(origin.name.split("/")[1]) : utils.titleize(origin.name)}</div>
+      <div class="stretch"><div class="p_airport_reference" style="display:inline-block">PARA</div> ${destination.name.split("/")[1] ? utils.titleize(destination.name.split("/")[1]) : utils.titleize(destination.name)}</div>`;
       pAerodrome.innerHTML = pAerodromeContent;
       let colStretch = document.createElement('div');
       colStretch.setAttribute('class', 'col-sm-6');
@@ -234,11 +234,11 @@ class Quotation {
       colTime.setAttribute('class', 'col-sm-3');
 
       let pTimeTxt = document.createElement('p');
-      pTimeTxt.appendChild(document.createTextNode("Tempo de viagem"));
+      pTimeTxt.appendChild(document.createTextNode("Tempo estimado"));
       pTimeTxt.setAttribute('class', 'trip-title');
 
       let pTime = document.createElement('p');
-      pTime.setAttribute('style', 'font-size: 14px;');
+      pTime.setAttribute("class", "p_time_design");
       pTime.appendChild(document.createTextNode(`${utils.minsToHHMMSS(aircrafts[0].flight_time).split(":")[0]}h ${utils.minsToHHMMSS(aircrafts[0].flight_time).split(":")[1]}min`));
       
       colTime.appendChild(pTimeTxt);
@@ -253,7 +253,7 @@ class Quotation {
       pPriceTxt.appendChild(document.createTextNode("A partir de"));
       pPriceTxt.setAttribute('class', 'trip-title');
 
-      pPrice.setAttribute('style', 'font-size: 14px;');
+      pPrice.setAttribute('class', 'p_time_design');
       pPrice.appendChild(document.createTextNode(`${utils.formatCurrency(aircrafts[0].price)}`));
       
       colPrice.appendChild(pPriceTxt);
@@ -262,8 +262,8 @@ class Quotation {
       let rowTitle = document.createElement('div');
       rowTitle.setAttribute('class', 'row');
       rowTitle.appendChild(colStretch);
-      rowTitle.appendChild(colTime);
       rowTitle.appendChild(colPrice);
+      rowTitle.appendChild(colTime);
 
       let a = document.createElement('a');
       a.setAttribute('role', 'button');
@@ -302,8 +302,8 @@ class Quotation {
         colAircraftThumbnail.appendChild(thumbnail);
         // Info aircraft
         let infoContent = `<p class="title-aircraft-details"><strong>${aircraft.name}</strong></p>
-        <p class="info-details"><strong>Passageiros:</strong> ${aircraft.passengers}</p>
-        <p class="info-details"><strong>Velocidade de cruzeiro: </strong>${aircraft.cruising_speed} Km/h</p>
+        <p class="info-details"><strong>Quantidade de passageiros: </strong>${aircraft.passengers}</p>
+        <p class="info-details"><strong>Tempo de voo: </strong>${utils.minsToHHMMSS(aircraft.flight_time).split(":")[0]}h ${utils.minsToHHMMSS(aircraft.flight_time).split(":")[1]}min</p>
         <p class="info-price">${utils.formatCurrency(aircraft.price)}</p>`;
 
         let info = document.createElement('div');
