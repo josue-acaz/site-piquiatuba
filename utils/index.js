@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const ip_api = axios.create({
-  baseURL: 'http://ip-api.com',
+  baseURL: 'https://ip-api.com',
 });
 
 const geocode_api = axios.create({
