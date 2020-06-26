@@ -165,7 +165,7 @@ class Quotation {
 
   registerHandlers() {
     this.search(this.query);
-    this.getCurrentUserLocation();
+    //this.getCurrentUserLocation();
   }
 
   async getCurrentUserLocation() {
@@ -555,7 +555,7 @@ class Quotation {
     this.submitQuotation({
       search: this.searchParams,
       user,
-      userLocation: this.userLocation,
+      userLocation: null,
       stretch: this.checkout[0],
       subtotal,
     });

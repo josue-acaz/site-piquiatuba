@@ -4,9 +4,9 @@ const ip_api = axios.create({
   baseURL: 'https://ip-api.com',
 });
 
-const geocode_api = axios.create({
+/*const geocode_api = axios.create({
   baseURL: process.env.API_URL,
-});
+});*/
 
 const utils = {
   queryString(parameter) {  
