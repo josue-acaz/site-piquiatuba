@@ -1,3 +1,13 @@
+import axios from 'axios';
+
+const ip_api = axios.create({
+  baseURL: 'http://ip-api.com',
+});
+
+const geocode_api = axios.create({
+  baseURL: process.env.API_URL,
+});
+
 const utils = {
   queryString(parameter) {  
     let loc = location.search.substring(1, location.search.length);   
@@ -144,6 +154,35 @@ const utils = {
     if (minutes < 10) {minutes = "0"+minutes;}
     if (seconds < 10) {seconds = "0"+seconds;}
     return hours+':'+minutes+':'+seconds;
+  },
+  
+  removeSpecialCharacteres(value) {
+    return value.replace(/[^\d]+/g,'');
+  },
+
+  async ipLookUp () {
+    try {
+      const response = await ip_api.get("/json");
+      return response.data;
+      //return utils.getAddress(response.lat, response.lon);
+    } catch (err) {
+      console.log('Request failed.  Returned status of', err);
+    }
+  },
+
+  getAddress (latitude, longitude) {
+    const GOOGLE_MAP_KEY = 'AIzaSyDiGTLiKNW40Hcp9OEEFZ6lNZnD2U0zEGs';
+    $.ajax('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latitude + ',' + longitude + '&key=' + GOOGLE_MAP_KEY)
+    .then(
+      function success (response) {
+        return response;
+      },
+      function fail (status) {
+        console.log('Request failed.  Returned status of',
+                    status);
+        return status;
+      }
+     )
   }
 };
 

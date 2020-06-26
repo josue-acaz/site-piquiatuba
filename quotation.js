@@ -153,6 +153,7 @@ class Quotation {
     this.quotations = [];
     this.checkout = []; // Guarda os trechos escolhidos
     //this.tripMode = this.searchParams.trip_mode;
+    this.userLocation = {};
 
     // Elements
     this.panelGroup = document.getElementById('accordion');
@@ -164,6 +165,33 @@ class Quotation {
 
   registerHandlers() {
     this.search(this.query);
+    this.getCurrentUserLocation();
+  }
+
+  async getCurrentUserLocation() {
+
+    const userLocation = async() => {
+      let data = {};
+      //const GEOLOCATION =  "geolocation";
+
+      /*GEOLOCATION in navigator ? 
+
+      navigator.geolocation.getCurrentPosition(
+        async function success (position) {
+          const { coords: { latitude, longitude } } = position;
+          const res = utils.getAddress(latitude, longitude);
+        },
+        async function error (error_message) {
+          const res = await utils.ipLookUp();
+        }
+      ) :*/
+
+      data = await utils.ipLookUp();
+
+      return data;
+    };
+
+    this.userLocation = await userLocation();
   }
 
   async search(query) {
@@ -460,16 +488,6 @@ class Quotation {
         destination,
         aircraft,
       });
-
-      /*if(this.tripMode === "roundtrip") {
-        this.checkout.push({
-          id: id+1,
-          origin: destination,
-          destination: origin,
-          aircraft,
-        });
-      }*/
-
       this.showCheckout();
     }
 
@@ -526,17 +544,19 @@ class Quotation {
     };
 
     if(isPessoaFisica) { // se for pessoa física
-      user.cpf = cpfInput.value;
-      user.dob = dobInput.value;
-      user.type = "Pessoa Física";
+      user.cpf = utils.removeSpecialCharacteres(cpfInput.value);
+      user.dob = `${dobInput.value.split("/")[2]}-${dobInput.value.split("/")[1]}-${dobInput.value.split("/")[0]}`;
+      user.type = "pessoa-fisica";
     } else { // se for pessoa jurídica
-      user.cnpj = cnpjInput.value;
-      user.type = "Pessoa Jurídica";
+      user.cnpj = utils.removeSpecialCharacteres(cnpjInput.value);
+      user.type = "pessoa-juridica";
     }
 
     this.submitQuotation({
+      search: this.searchParams,
       user,
-      stretches: this.quotations,
+      userLocation: this.userLocation,
+      stretch: this.checkout[0],
       subtotal,
     });
   }
@@ -544,7 +564,6 @@ class Quotation {
   submitQuotation(data) {
     swal({
       title: "Finalizar cotação e enviar pedido?",
-      //text: "Uma vez excluído, você não poderá recuperar este arquivo!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -554,8 +573,7 @@ class Quotation {
       if(willSend){
         this.setLoading(true);
         try {
-          console.log(data);
-          const response = await api.post(`/quotation/send`);
+          await api.post(`/quotation/send`, data);
           this.setLoading(false);
 
           swal("Seu pedido foi enviado, brevemente entraremos em contato!", {
