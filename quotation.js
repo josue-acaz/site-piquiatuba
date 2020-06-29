@@ -638,7 +638,7 @@ class Quotation {
         checkoutItem.setAttribute("class", "row checkout-item");
 
         checkoutItem.innerHTML = `
-        <div class="col-sm-4 img-resize-thumbnail">
+        <div class="col-sm-4">
           <img src="${aircraft.thumbnail}" />
         </div>
         <div class="col-sm-8 checkout-info">
