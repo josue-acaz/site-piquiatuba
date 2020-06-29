@@ -563,7 +563,7 @@ class Quotation {
 
   submitQuotation(data) {
     swal({
-      title: "Finalizar cotação e enviar pedido?",
+      title: "Finalizar cotação e solicitar proposta?",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -637,8 +637,9 @@ class Quotation {
         let checkoutItem = document.createElement("div");
         checkoutItem.setAttribute("class", "row checkout-item");
 
-        checkoutItem.innerHTML = `<div class="col-sm-4">
-        <img src="${aircraft.thumbnail}" />
+        checkoutItem.innerHTML = `
+        <div class="col-sm-4 img-resize-thumbnail">
+          <img src="${aircraft.thumbnail}" />
         </div>
         <div class="col-sm-8 checkout-info">
           <p class="aircraft-name">${aircraft.name}</p>
@@ -646,6 +647,7 @@ class Quotation {
           <p><p class="p-title">Destino:</p> ${destination.name.split("/")[1] ? utils.titleize(destination.name.split("/")[1]) : utils.titleize(destination.name)}, ${utils.titleize(destination.city)}, ${destination.uf}</p>
           <p><p class="p-title">Preço:</p> ${utils.formatCurrency(aircraft.price)}</p>
           <p><p class="p-title">Tempo de Viagem:</p> ${utils.minsToHHMMSS(aircraft.flight_time).split(":")[0]}h ${utils.minsToHHMMSS(aircraft.flight_time).split(":")[1]}min</p>
+          <p><p class="p-title">Base de Referência:</p> ${aircraft.base.name}</p>
         </div>`;
 
         //let removeItemBtn = document.createElement("button");
