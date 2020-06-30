@@ -4,6 +4,8 @@ import swal from 'sweetalert';
 import api from './api';
 import utils from './utils';
 
+let userLocation = {};
+
 const checkout_container = document.getElementById("checkout-container");
 
 // Formulário que o usuário irá preencher
@@ -163,35 +165,72 @@ class Quotation {
     this.registerHandlers();
   }
 
-  registerHandlers() {
+  async registerHandlers() {
     this.search(this.query);
-    //this.getCurrentUserLocation();
+    this.getCurrentUserLocation();
+  }
+
+  async handleGetUserLocation(position) {
+    const { coords: { latitude, longitude } } = position;
+    userLocation = await utils.getAddress(latitude, longitude);
+
+    const { results } = userLocation;
+
+    const { 
+      formatted_address, 
+      address_components, 
+      geometry: { location: lat, lng } 
+    } = results[0];
+
+    sessionStorage.setItem("userLocation", JSON.stringify({
+      city: address_components[3].long_name,
+      country: address_components[5].long_name,
+      country_code: address_components[5].short_name,
+      latitude: lat,
+      longitude: lng,
+      uf: address_components[4].short_name,
+      uf_name: address_components[4].long_name,
+      zip: address_components[6].long_name,
+    }));
+  }
+
+  async handleErrorGetUserLocation(error_message) {
+    console.error(error_message);
+    const { city, country, countryCode, lat, lon, region, regionName, zip } = await utils.ipLookUp();
+
+    sessionStorage.setItem("userLocation", JSON.stringify({
+      city,
+      country,
+      country_code: countryCode,
+      latitude: lat,
+      longitude: lon,
+      uf: region,
+      uf_name: regionName,
+      zip,
+    }));
   }
 
   async getCurrentUserLocation() {
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.handleGetUserLocation, this.handleErrorGetUserLocation);
+    } else { // A geolocalização não é suportada
+      const { city, country, countryCode, lat, lon, region, regionName, zip } = await utils.ipLookUp();
+      sessionStorage.setItem("userLocation", JSON.stringify({
+        city,
+        country,
+        country_code: countryCode,
+        latitude: lat,
+        longitude: lon,
+        uf: region,
+        uf_name: regionName,
+        zip,
+      }));
+    }
+  }
 
-    const userLocation = async() => {
-      let data = {};
-      //const GEOLOCATION =  "geolocation";
-
-      /*GEOLOCATION in navigator ? 
-
-      navigator.geolocation.getCurrentPosition(
-        async function success (position) {
-          const { coords: { latitude, longitude } } = position;
-          const res = utils.getAddress(latitude, longitude);
-        },
-        async function error (error_message) {
-          const res = await utils.ipLookUp();
-        }
-      ) :*/
-
-      data = await utils.ipLookUp();
-
-      return data;
-    };
-
-    this.userLocation = await userLocation();
+  showUserLocation() {
+    userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
+    console.log(userLocation);
   }
 
   async search(query) {
@@ -243,10 +282,21 @@ class Quotation {
       const { id, origin, destination, aircrafts } = quotation;
       aircrafts.sort(utils.lowerVal);
 
+      // Calculo do tempo de viagem + horario de partida
+      const headerFlightTime = aircrafts[0].flight_time;
+      const { departure_date } = this.searchParams;
+
+      const headerArrivalTime = new Date(departure_date);
+      headerArrivalTime.setMinutes(headerArrivalTime.getMinutes()+headerFlightTime);
+      
+      const showTimeFormated = headerArrivalTime.toString().split(" ")[4];
+      const showDateFormated = headerArrivalTime.toISOString().split("T")[0];
+      const showDateTimeFormated = `${showDateFormated} ${showTimeFormated}`;
+
       // col stretch
       let pStretch = document.createElement('p');
       pStretch.setAttribute('style', 'font-size: 22px;');
-      let pStretchContent = `<strong>${moment(search_params.departure_date.toString().split(' ')[1], 'HH:mm:ss').format('HH:mm')}</strong> ${origin.oaci_code} <i class="fas fa-angle-right"></i> <strong>${'09:30'}</strong> ${destination.oaci_code}`;
+      let pStretchContent = `<strong>${moment(search_params.departure_date.toString().split(' ')[1], 'HH:mm:ss').format('HH:mm')}</strong> ${origin.oaci_code} <i class="fas fa-angle-right"></i> <strong>${moment(showDateTimeFormated.split(' ')[1], 'HH:mm:ss').format('HH:mm')}</strong> ${destination.oaci_code}`;
       pStretch.innerHTML = pStretchContent;
       let pAerodrome = document.createElement('p');
       pAerodrome.setAttribute("class", "stretch");
@@ -481,6 +531,10 @@ class Quotation {
     btn.appendChild(document.createTextNode('SELECIONAR'));
 
     btn.onclick = () => {
+
+      // Teste de localização
+      this.showUserLocation();
+
       this.checkout = [];
       this.checkout.push({
         id,

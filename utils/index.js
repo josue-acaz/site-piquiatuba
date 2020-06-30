@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-const ip_api = axios.create({
-  baseURL: 'https://ip-api.com',
+const googleApi = axios.create({
+  baseURL: 'https://maps.googleapis.com',
 });
 
-/*const geocode_api = axios.create({
-  baseURL: process.env.API_URL,
-});*/
+const locationApi = axios.create({
+  baseURL: 'http://ip-api.com',
+});
 
 const utils = {
   queryString(parameter) {  
@@ -26,7 +26,6 @@ const utils = {
         return undefined;
     }
   },
-
   flightIDGenerator(size) {
     var randomized = Math.ceil(Math.random() * Math.pow(10,size));//Cria um número aleatório do tamanho definido em size.
     var digito = Math.ceil(Math.log(randomized));//Cria o dígito verificador inicial
@@ -36,7 +35,6 @@ const utils = {
     var id = randomized + '-' + digito;//Cria a ID
     return id;
   },
-
   buildQueryString(object) {
     var esc = encodeURIComponent;
     var query = Object.keys(object)
@@ -44,7 +42,6 @@ const utils = {
         .join('&');
     return query;
   },
-
   parseQueryString() {
 
     // Use location.search to access query string instead
@@ -79,7 +76,6 @@ const utils = {
 
     }, {})
   },
-
   getRadioVal(name) {
     var value;
     var radios = document.getElementsByName(name);
@@ -96,7 +92,6 @@ const utils = {
 
     return value;
   },
-
   getCurrentTime() {
     const currentDateTime = new Date();
     return(`${
@@ -107,7 +102,6 @@ const utils = {
       currentDateTime.getSeconds().toString().length === 1 ? "0"+currentDateTime.getSeconds().toString() : currentDateTime.getSeconds().toString()
     }`);
   },
-
   addHoursToTime(time, hours) {
     const cuurent_date = (new Date()).toISOString().split("T")[0];
     const date = new Date(`${cuurent_date} ${time}`);
@@ -121,7 +115,6 @@ const utils = {
       date.getSeconds().toString().length === 1 ? "0"+date.getSeconds().toString() : date.getSeconds().toString()
     }`);
   },
-
   titleize(text) {
     var words = text.toLowerCase().split(" ");
     for (var a = 0; a < words.length; a++) {
@@ -130,7 +123,6 @@ const utils = {
     }
     return words.join(" ");
   },
-
   lowerVal(a,b) {
     if (a.price < b.price)
       return -1;
@@ -138,11 +130,9 @@ const utils = {
       return 1;
     return 0;
   },
-
   formatCurrency(price) {
     return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   },
-
   minsToHHMMSS(value) {
     var mins_num = parseFloat(value, 10); // don't forget the second param
     var hours   = Math.floor(mins_num / 60);
@@ -155,34 +145,25 @@ const utils = {
     if (seconds < 10) {seconds = "0"+seconds;}
     return hours+':'+minutes+':'+seconds;
   },
-  
   removeSpecialCharacteres(value) {
     return value.replace(/[^\d]+/g,'');
   },
-
   async ipLookUp () {
-    try {
-      const response = await ip_api.get("/json");
-      return response.data;
-      //return utils.getAddress(response.lat, response.lon);
-    } catch (err) {
-      console.log('Request failed.  Returned status of', err);
-    }
+    const response = await locationApi.get("/json");
+    return response.data;
   },
-
-  getAddress (latitude, longitude) {
-    const GOOGLE_MAP_KEY = 'AIzaSyDiGTLiKNW40Hcp9OEEFZ6lNZnD2U0zEGs';
-    $.ajax('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latitude + ',' + longitude + '&key=' + GOOGLE_MAP_KEY)
-    .then(
-      function success (response) {
-        return response;
-      },
-      function fail (status) {
-        console.log('Request failed.  Returned status of',
-                    status);
-        return status;
-      }
-     )
+  async getAddress(latitude, longitude) {
+    const response = await googleApi.get(`/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCgYB0CuJLoyeoysdhEag7dYdgwNxx8drY`);
+    return response.data;
+  },
+  getTimeFromDateObject(obj) {
+    return(`${
+      obj.getHours().toString().length === 1 ? "0"+obj.getHours().toString() : obj.getHours().toString()
+    }:${
+      obj.getMinutes().toString().length === 1 ? "0"+obj.getMinutes().toString() : obj.getMinutes().toString()
+    }:${
+      obj.getSeconds().toString().length === 1 ? "0"+obj.getSeconds().toString() : obj.getSeconds().toString()
+    }`);
   }
 };
 
