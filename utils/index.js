@@ -156,15 +156,6 @@ const utils = {
     const response = await googleApi.get(`/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCgYB0CuJLoyeoysdhEag7dYdgwNxx8drY`);
     return response.data;
   },
-  getTimeFromDateObject(obj) {
-    return(`${
-      obj.getHours().toString().length === 1 ? "0"+obj.getHours().toString() : obj.getHours().toString()
-    }:${
-      obj.getMinutes().toString().length === 1 ? "0"+obj.getMinutes().toString() : obj.getMinutes().toString()
-    }:${
-      obj.getSeconds().toString().length === 1 ? "0"+obj.getSeconds().toString() : obj.getSeconds().toString()
-    }`);
-  }
 };
 
 export default utils;

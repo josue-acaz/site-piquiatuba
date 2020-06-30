@@ -192,6 +192,8 @@ class Quotation {
       uf_name: address_components[4].long_name,
       zip: address_components[6].long_name,
     }));
+
+    console.log(JSON.parse(sessionStorage.getItem("userLocation")));
   }
 
   async handleErrorGetUserLocation(error_message) {
@@ -208,6 +210,8 @@ class Quotation {
       uf_name: regionName,
       zip,
     }));
+
+    console.log(JSON.parse(sessionStorage.getItem("userLocation")));
   }
 
   async getCurrentUserLocation() {
@@ -225,6 +229,7 @@ class Quotation {
         uf_name: regionName,
         zip,
       }));
+      console.log(JSON.parse(sessionStorage.getItem("userLocation")));
     }
   }
 
