@@ -3,10 +3,13 @@ import flatpickr from 'flatpickr';
 import api from './api';
 import utils from './utils';
 
-//let oneway = document.getElementById("oneway");
-//let roundtrip = document.getElementById("roundtrip");
-let passengers = document.getElementById("passengers");
-passengers.value = 1;
+let aeromedical_transport = document.getElementById("aeromedical_transport");
+let passengers_transport = document.getElementById("passengers_transport");
+let passengers = null;
+
+let is_aeromedical_transport = false;
+let passengers_aeromedical = document.getElementById("passengers_aeromedical");
+let covid = false; // Diz se é suspeita de covid
 
 // Mostrar erros
 let snackbar = document.getElementById("snackbar");
@@ -15,6 +18,7 @@ class App {
   constructor() {
 
     this.btnSubmit = document.getElementById("search-btn");
+    this.handleCreatePassengersInput();
     this.registerHandlers();
 
     // Inputs elements
@@ -40,7 +44,121 @@ class App {
       this.handleSubmit();
     }
     
+    aeromedical_transport.onclick = () => this.handleTransportMode();
+    passengers_transport.onclick = () => this.handleTransportMode();
+  }
+
+  handleCreatePassengersInput() {
+    passengers_aeromedical.innerHTML = "";
+
+    let label = document.createElement("label");
+    label.setAttribute("class", "label-input-search");
+    label.setAttribute("for", "passengers");
+    label.appendChild(document.createTextNode("NÚMERO DE PASSAGEIROS"));
+
+    let inputWithIcon = document.createElement("div");
+    inputWithIcon.setAttribute("class", "input-with-icon");
+    inputWithIcon.setAttribute("id", "passengers-input");
+
+    let input = document.createElement("input");
+    input.setAttribute("type", "number");
+    input.setAttribute("min", "1");
+    input.setAttribute("id", "passengers");
+    input.setAttribute("placeholder", "Número de passageiros");
+
+    let icon = document.createElement("i");
+    icon.setAttribute("style", "font-size: 28px;");
+    icon.setAttribute("class", "material-icons");
+    icon.appendChild(document.createTextNode("airline_seat_recline_normal"));
+
+    inputWithIcon.appendChild(input);
+    inputWithIcon.appendChild(icon);
+
+    passengers_aeromedical.appendChild(label);
+    passengers_aeromedical.appendChild(inputWithIcon);
+
+    passengers = input;
+    passengers.value = 1;
     passengers.onchange = (event) => this.passengers = event.target.value;
+  }
+
+  handleCreateCovidSelect() {
+    passengers_aeromedical.innerHTML = "";
+
+    let btnYesCovid = document.createElement("button");
+    btnYesCovid.setAttribute("id", "btn_selected_covid");
+    btnYesCovid.setAttribute("type", "button");
+    btnYesCovid.setAttribute("class", "btn");
+
+    btnYesCovid.classList.add("btn_not_selected_covid");
+    btnYesCovid.appendChild(document.createTextNode("SIM"));
+
+    let btnNotCovid = document.createElement("button");
+    btnNotCovid.setAttribute("id", "btn_not_selected_covid");
+    btnNotCovid.setAttribute("type", "button");
+    btnNotCovid.setAttribute("class", "btn");
+
+    btnNotCovid.classList.add("btn_selected_covid");
+
+    btnNotCovid.appendChild(document.createTextNode("NÃO"));
+
+    let btnGroup =  document.createElement("div");
+    btnGroup.setAttribute("id", "select-covid");
+    btnGroup.setAttribute("class", "btn-group");
+    btnGroup.setAttribute("role", "group");
+
+    let label = document.createElement('label');
+    label.setAttribute('class', 'label-input-search');
+    label.setAttribute('for', 'select-covid');
+    label.appendChild(document.createTextNode("SUSPEITA DE COVID-19?"));
+
+    btnYesCovid.onclick = () => {
+      if(!covid) {
+        this.handleChangeCovidOption(btnYesCovid, btnNotCovid)
+      }
+    };
+    btnNotCovid.onclick = () => {
+      if(covid) {
+        this.handleChangeCovidOption(btnYesCovid, btnNotCovid)
+      }
+    };
+
+    btnGroup.appendChild(btnYesCovid);
+    btnGroup.appendChild(btnNotCovid);
+
+    // A PARTIR DAQUI
+    passengers_aeromedical.appendChild(label);
+    passengers_aeromedical.appendChild(btnGroup);
+  }
+
+  handleChangeCovidOption(btnYes, btnNot) {
+    covid = !covid;
+    if(covid) {
+      btnYes.classList.remove("btn_not_selected_covid");
+      btnYes.classList.add("btn_selected_covid");
+
+      btnNot.classList.remove("btn_selected_covid");
+      btnNot.classList.add("btn_not_selected_covid");
+    } else {
+      btnYes.classList.remove("btn_selected_covid");
+      btnYes.classList.add("btn_not_selected_covid");
+
+      btnNot.classList.remove("btn_not_selected_covid");
+      btnNot.classList.add("btn_selected_covid");
+    }
+  }
+
+  handleTransportMode() {
+    const value = utils.getRadioVal("radios");
+
+    if(value === 'aeromedical_transport') {
+      this.handleCreateCovidSelect();
+      is_aeromedical_transport = true;
+    }
+    if(value === 'passengers_transport') {
+      this.handleCreatePassengersInput();
+      is_aeromedical_transport = false;
+    }
   }
 
   // Validate form and submit
@@ -52,7 +170,8 @@ class App {
       departure_date: this.departureDateTime,
       //return_date: this.returnDateTime,
       passengers_: parseInt(this.passengers),
-      trip_mode: utils.getRadioVal("radios"),
+      is_aeromedical_transport,
+      covid,
     };
 
     // VALIDAÇÕES
@@ -111,7 +230,8 @@ class App {
           departure_date: data.departure_date,
           //return_date: data.return_date,
           passengers_: data.passengers_,
-          //trip_mode: data.trip_mode,
+          is_aeromedical_transport: data.is_aeromedical_transport,
+          covid: data.covid,
         });
       }
     }
@@ -179,6 +299,7 @@ class App {
 }
 
 const app = new App();
+//aeromedical_transport.onload = () => { window.location.reload(); }
 
 /**Out scripts */
 // Cidade de Origem

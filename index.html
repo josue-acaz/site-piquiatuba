@@ -385,15 +385,16 @@
 										</div>
 								</div>
 
-								<!--<div class="row">
+								<label class="label-input-search" for="roundtrip">TIPO DE TRANSPORTE</label>
+								<div class="row">
 										<div class="col-sm-6">
 											<div class="mdc-form-field">
 												<div class="mdc-radio">
 													<input 
 														class="mdc-radio__native-control" 
-														value="roundtrip" 
+														value="passengers_transport" 
 														type="radio" 
-														id="roundtrip" 
+														id="passengers_transport" 
 														name="radios" 
 														checked
 													>
@@ -403,13 +404,13 @@
 													</div>
 													<div class="mdc-radio__ripple"></div>
 												</div>
-												<label for="roundtrip">Ida e Volta</label>
+												<label for="roundtrip">Passageiros</label>
 												<div class="mdc-radio">
 													<input 
 														class="mdc-radio__native-control" 
-														value="oneway" 
+														value="aeromedical_transport" 
 														type="radio" 
-														id="oneway" 
+														id="aeromedical_transport" 
 														name="radios"
 													>
 													<div class="mdc-radio__background">
@@ -418,10 +419,10 @@
 													</div>
 													<div class="mdc-radio__ripple"></div>
 												</div>
-												<label  for="oneway">Somente Ida</label>
+												<label  for="oneway">Aeromédico</label>
 											</div>
 										</div>
-								</div>-->
+								</div>
 
 								<div class="row">
 										<div class="col-sm-6" id="col-departure-date">
@@ -434,27 +435,12 @@
 														</div>
 												</div>
 										</div>
-										
-										<!--DATA DA VOLTA-->
-										<!--<div class="col-sm-4" id="col-return-date">
-											<div class="form-group" id="return-date-el">
-													<label class="label-input-search" for="return-date">VOLTA</label>
-													<div class="input-with-icon" id="return-date-input">
-															<input type="datetime" class="return-datetime" id="return-datetime" placeholder="Selecione a data da volta">
-															<i class="fas fa-calendar-day"></i>
-													</div>
-											</div>
-										</div>-->
 
 										<div class="col-sm-6" id="col-passengers">
-											<div class="form-group">
-													<label class="label-input-search" for="name">NÚMERO DE PASSAGEIROS</label>
-													<div class="input-with-icon" id="passengers-input">
-															<input type="number" min="1" id="passengers" placeholder="Número de passageiros">
-															<i style="font-size: 28px" class="material-icons">airline_seat_recline_normal</i>
-													</div>
+											<div class="form-group" id="passengers_aeromedical">
+													
 											</div>
-									</div>
+										</div>
 								</div>
 
 								<button id="search-btn" type="submit">BUSCAR</button>

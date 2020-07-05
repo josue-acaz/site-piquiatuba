@@ -154,7 +154,7 @@ class Quotation {
 
     this.quotations = [];
     this.checkout = []; // Guarda os trechos escolhidos
-    //this.tripMode = this.searchParams.trip_mode;
+    this.covid = this.searchParams.covid;
     this.userLocation = {};
 
     // Elements
@@ -396,9 +396,41 @@ class Quotation {
         colAircraftInfo.setAttribute('class', 'col-sm-7 remove-col-margin');
         colAircraftInfo.setAttribute('style', 'padding-left: 10px;');
         colAircraftInfo.appendChild(info);
+
+        // HORÁRIO DE FUNCIOMANETO DO AEROPORTO
+        let colAirportTimeMode = document.createElement('div');
+        colAirportTimeMode.setAttribute('class', 'col-sm-12 remove-col-margin');
+
+
+        const airportArrivalTime = new Date(departure_date);
+        airportArrivalTime.setMinutes(airportArrivalTime.getMinutes()+aircraft.flight_time);
+        
+        const showTimeFormatedAirport = airportArrivalTime.toString().split(" ")[4];
+        const showDateFormatedAirport = airportArrivalTime.toISOString().split("T")[0];
+        const showDateTimeFormatedAirport = `${showDateFormatedAirport} ${showTimeFormatedAirport}`;
+
+        if(!aircraft.enable_start_flight) {
+          let warning = document.createElement('p');
+          warning.setAttribute('class', 'warning_airport_operation');
+          warning.appendChild(document.createTextNode(`
+            Às ${moment(search_params.departure_date.toString().split(' ')[1], 'HH:mm:ss').format('HH:mm')} este aeroporto ainda não está funcionando.
+          `));
+          colAirportTimeMode.appendChild(warning);
+        }
+
+        if(!aircraft.enable_complete_flight) {
+          let warning = document.createElement('p');
+          warning.setAttribute('class', 'warning_airport_operation');
+          warning.appendChild(document.createTextNode(`
+            Esta aeronave chegaria ao seu destino às ${moment(showDateTimeFormatedAirport.split(' ')[1], 'HH:mm:ss').format('HH:mm')}. Este aeroporto não recebe pousos de 18:00 a 05:59.
+          `));
+          colAirportTimeMode.appendChild(warning);
+        }
+
         // Row aircraft select
         let rowAircraftSelect = document.createElement('div');
         rowAircraftSelect.setAttribute('class', 'row');
+        rowAircraftSelect.appendChild(colAirportTimeMode);
         rowAircraftSelect.appendChild(colAircraftThumbnail);
         rowAircraftSelect.appendChild(colAircraftInfo);
         // Aircraft select (O primeiro e o último elemento deve ser aplicado o estilo para retirar a borda).

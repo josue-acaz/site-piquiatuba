@@ -1272,3 +1272,58 @@ div.checkout-scrollbar a {
   font-weight: normal;
   margin: 0;
 }
+
+.warning_airport_operation {
+  background-color: #ffe680;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 0;
+}
+
+.search-form .btn_selected_covid {
+  display: inline-block;
+  padding: 24px;
+  width: 56px;
+  height: 48px;
+	border: 0.125rem solid #2c698d;
+	border-radius: 5px;
+	background-color: #2c698d;
+	color: #fff;
+	font: 700 0.75rem/0 "Roboto", sans-serif;
+	text-decoration: none;
+  transition: all 0.2s;
+}
+
+.search-form .btn_selected_covid:hover {
+  display: inline-block;
+	border: 0.125rem solid #2c698d;
+	background-color: #2c698d;
+	color: #fff;
+	font: 700 0.75rem/0 "Roboto", sans-serif;
+	text-decoration: none;
+  transition: all 0.2s;
+}
+
+.search-form .btn_not_selected_covid {
+  display: inline-block;
+  padding: 24px;
+  height: 48px;
+  border: none;
+  width: 56px;
+	border-radius: 5px;
+	background-color: #d9d9d9;
+	color: #999;
+	font: 700 0.75rem/0 "Roboto", sans-serif;
+	text-decoration: none;
+  transition: all 0.2s;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.search-form .btn_not_selected_covid:hover {
+  display: inline-block;
+	background-color: #FFFF;
+	color: #2c698d;
+	font: 700 0.75rem/0 "Roboto", sans-serif;
+	text-decoration: none;
+  transition: all 0.2s;
+}
