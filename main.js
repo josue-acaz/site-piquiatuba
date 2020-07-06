@@ -3,6 +3,14 @@ import flatpickr from 'flatpickr';
 import api from './api';
 import utils from './utils';
 
+// Redefine o estado dos inputs radios
+window.onload=function() {
+  var radios = document.querySelectorAll('input[type="radio"]');
+  for (var i  = 0, l = radios.length; i < l; i++) {
+      radios[i].checked = radios[i].defaultChecked;
+  }
+}
+
 let aeromedical_transport = document.getElementById("aeromedical_transport");
 let passengers_transport = document.getElementById("passengers_transport");
 let passengers = null;
