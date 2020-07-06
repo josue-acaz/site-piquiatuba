@@ -154,7 +154,9 @@ class Quotation {
 
     this.quotations = [];
     this.checkout = []; // Guarda os trechos escolhidos
-    this.covid = this.searchParams.covid;
+    const { is_aeromedical_transport, covid } = this.searchParams;
+    this.is_aeromedical_transport = is_aeromedical_transport;
+    this.covid = covid;
     this.userLocation = {};
 
     // Elements
@@ -383,54 +385,48 @@ class Quotation {
         let colAircraftThumbnail = document.createElement('div');
         colAircraftThumbnail.setAttribute('class', 'col-sm-5 remove-col-margin aircraft-thumbnail');
         colAircraftThumbnail.appendChild(thumbnail);
+
         // Info aircraft
-        let infoContent = `<p class="title-aircraft-details"><strong>${aircraft.name}</strong></p>
-        <p class="info-details"><strong>Quantidade de passageiros: </strong>${aircraft.passengers}</p>
-        <p class="info-details"><strong>Tempo de voo: </strong>${utils.minsToHHMMSS(aircraft.flight_time).split(":")[0]}h ${utils.minsToHHMMSS(aircraft.flight_time).split(":")[1]}min</p>
-        <p class="info-price">${utils.formatCurrency(aircraft.price)}</p>`;
+        function createStrong(text) {
+          let strong = document.createElement('strong');
+          strong.appendChild(document.createTextNode(text));
+          return strong;
+        }
+
+        let pAircraftName = document.createElement('p');
+        pAircraftName.setAttribute('class', 'title-aircraft-details');
+        pAircraftName.appendChild(createStrong(aircraft.name));
+
+        let qtdPassengers = document.createElement('p');
+        qtdPassengers.setAttribute('class', 'info-details');
+        qtdPassengers.innerHTML = `<strong>Quantidade de passageiros: </strong>${aircraft.passengers}`;
+
+        let flightTime = document.createElement('p');
+        flightTime.setAttribute('class', 'info-details');
+        flightTime.innerHTML = `<strong>Tempo de voo: </strong>${utils.minsToHHMMSS(aircraft.flight_time).split(":")[0]}h ${utils.minsToHHMMSS(aircraft.flight_time).split(":")[1]}min`;
+
+        let pPrice = document.createElement('p');
+        pPrice.setAttribute('class', 'info-details');
+        pPrice.innerHTML = utils.formatCurrency(aircraft.price);
 
         let info = document.createElement('div');
         info.setAttribute('class', 'aircraft-details');
-        info.innerHTML = infoContent;
+        info.appendChild(pAircraftName);
+        if(!this.is_aeromedical_transport) {
+          info.appendChild(qtdPassengers);
+        }
+        info.appendChild(flightTime);
+        info.appendChild(pPrice);
+
         let colAircraftInfo = document.createElement('div');
         colAircraftInfo.setAttribute('class', 'col-sm-7 remove-col-margin');
         colAircraftInfo.setAttribute('style', 'padding-left: 10px;');
         colAircraftInfo.appendChild(info);
 
-        // HORÁRIO DE FUNCIOMANETO DO AEROPORTO
-        let colAirportTimeMode = document.createElement('div');
-        colAirportTimeMode.setAttribute('class', 'col-sm-12 remove-col-margin');
-
-
-        const airportArrivalTime = new Date(departure_date);
-        airportArrivalTime.setMinutes(airportArrivalTime.getMinutes()+aircraft.flight_time);
-        
-        const showTimeFormatedAirport = airportArrivalTime.toString().split(" ")[4];
-        const showDateFormatedAirport = airportArrivalTime.toISOString().split("T")[0];
-        const showDateTimeFormatedAirport = `${showDateFormatedAirport} ${showTimeFormatedAirport}`;
-
-        if(!aircraft.enable_start_flight) {
-          let warning = document.createElement('p');
-          warning.setAttribute('class', 'warning_airport_operation');
-          warning.appendChild(document.createTextNode(`
-            Às ${moment(search_params.departure_date.toString().split(' ')[1], 'HH:mm:ss').format('HH:mm')} este aeroporto ainda não está funcionando.
-          `));
-          colAirportTimeMode.appendChild(warning);
-        }
-
-        if(!aircraft.enable_complete_flight) {
-          let warning = document.createElement('p');
-          warning.setAttribute('class', 'warning_airport_operation');
-          warning.appendChild(document.createTextNode(`
-            Esta aeronave chegaria ao seu destino às ${moment(showDateTimeFormatedAirport.split(' ')[1], 'HH:mm:ss').format('HH:mm')}. Este aeroporto não recebe pousos de 18:00 a 05:59.
-          `));
-          colAirportTimeMode.appendChild(warning);
-        }
-
         // Row aircraft select
         let rowAircraftSelect = document.createElement('div');
         rowAircraftSelect.setAttribute('class', 'row');
-        rowAircraftSelect.appendChild(colAirportTimeMode);
+        //rowAircraftSelect.appendChild(colAirportTimeMode);
         rowAircraftSelect.appendChild(colAircraftThumbnail);
         rowAircraftSelect.appendChild(colAircraftInfo);
         // Aircraft select (O primeiro e o último elemento deve ser aplicado o estilo para retirar a borda).
@@ -439,7 +435,7 @@ class Quotation {
         aAircraft.setAttribute('class', 'list-group-item list-group-item-action');
         aAircraft.appendChild(rowAircraftSelect);
         aAircraft.onclick = () => { 
-          this.showAircraftDetails(id, aircraft, origin, destination, index); 
+          this.showAircraftDetails(id, aircraft, origin, destination, index, departure_date, search_params); 
         }
         scrollbar.appendChild(aAircraft); // APPEND ELEMENTS TO SCROLLBAR
       });
@@ -497,7 +493,7 @@ class Quotation {
     });
   }
 
-  showAircraftDetails(id, aircraft, origin, destination, index) {
+  showAircraftDetails(id, aircraft, origin, destination, index, departure_date, search_params) {
     const { aircraftImages, company } = aircraft;
 
     /**AIRCARFT ERROR */
@@ -541,6 +537,42 @@ class Quotation {
     let titleDesc = document.createElement('p');
     titleDesc.setAttribute('class', 'title-description padding-0');
     titleDesc.appendChild(document.createTextNode(aircraft.name));
+    
+    // HORÁRIO DE FUNCIOMANETO DO AEROPORTO
+    let colAirportTimeMode = document.createElement('div');
+    colAirportTimeMode.setAttribute('class', 'col-sm-12 remove-col-margin');
+
+
+    const airportArrivalTime = new Date(departure_date);
+    airportArrivalTime.setMinutes(airportArrivalTime.getMinutes()+aircraft.flight_time);
+    
+    const showTimeFormatedAirport = airportArrivalTime.toString().split(" ")[4];
+    const showDateFormatedAirport = airportArrivalTime.toISOString().split("T")[0];
+    const showDateTimeFormatedAirport = `${showDateFormatedAirport} ${showTimeFormatedAirport}`;
+
+    if(!aircraft.enable_start_flight) {
+      console.log("OK")
+      let warning = document.createElement('p');
+      warning.setAttribute('class', 'warning_airport_operation');
+      warning.appendChild(document.createTextNode(`
+        Às ${moment(search_params.departure_date.toString().split(' ')[1], 'HH:mm:ss').format('HH:mm')} este aeroporto ainda não está funcionando.
+      `));
+      colAirportTimeMode.appendChild(warning);
+    }
+
+    if(!aircraft.enable_complete_flight) {
+      let warning = document.createElement('p');
+      warning.setAttribute('class', 'warning_airport_operation');
+      warning.appendChild(document.createTextNode(`
+        Esta aeronave chegaria ao seu destino às ${moment(showDateTimeFormatedAirport.split(' ')[1], 'HH:mm:ss').format('HH:mm')}. Este aeroporto não recebe pousos de 18:00 a 05:59.
+      `));
+      colAirportTimeMode.appendChild(warning);
+    }
+
+    let pBaseReference = document.createElement('p');
+    pBaseReference.setAttribute('class', 'p_base_reference');
+    pBaseReference.innerHTML = `Esta aeronave está em <strong>${aircraft.base.name}-${aircraft.base.base_city.uf}</strong>!`
+
     let aircraftDesc = document.createElement('p');
     aircraftDesc.setAttribute('class', 'aircraft-description padding-0');
     aircraftDesc.appendChild(document.createTextNode(aircraft.description));
@@ -589,6 +621,8 @@ class Quotation {
     aircraftDetails.appendChild(sliderEl);
     aircraftDetails.appendChild(galleryEl);
     aircraftDetails.appendChild(titleDesc);
+    aircraftDetails.appendChild(pBaseReference);
+    aircraftDetails.appendChild(colAirportTimeMode);
     aircraftDetails.appendChild(aircraftDesc);
     aircraftDetails.appendChild(rowSpec);
     aircraftDetails.appendChild(nextBtn);
@@ -643,13 +677,20 @@ class Quotation {
       user.type = "pessoa-juridica";
     }
 
-    this.submitQuotation({
+    let data = {
       search: this.searchParams,
       user,
       userLocation: null,
       stretch: this.checkout[0],
       subtotal,
-    });
+      is_aeromedical_transport: this.is_aeromedical_transport,
+    };
+
+    if(this.is_aeromedical_transport) {
+      data.covid = this.covid;
+    }
+
+    this.submitQuotation(data);
   }
 
   submitQuotation(data) {

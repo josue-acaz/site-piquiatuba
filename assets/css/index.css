@@ -1327,3 +1327,7 @@ div.checkout-scrollbar a {
 	text-decoration: none;
   transition: all 0.2s;
 }
+
+.p_base_reference {
+  font-size: 18px;
+}

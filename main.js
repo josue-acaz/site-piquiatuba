@@ -206,14 +206,20 @@ class App {
       if(!this.validateDepartureDate(data.departure_date, 4)) {
         this.showSnackbar("A data da ida deve anteceder em até 4 horas a data atual!");
       } else {
-        this.search({
+
+        let search = {
           origin: `${data.origin.split(" • ")[0]}, ${data.origin.split(" • ")[1]}`,
           destination: `${data.destination.split(" • ")[0]}, ${data.destination.split(" • ")[1]}`,
           departure_date: data.departure_date,
           passengers_: data.passengers_,
           is_aeromedical_transport: data.is_aeromedical_transport,
-          covid: data.covid,
-        });
+        };
+
+        if(is_aeromedical_transport) {
+          search.covid = data.covid;
+        }
+        
+        this.search(search);
       }
     }
   }
