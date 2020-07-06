@@ -360,6 +360,44 @@
 					<p class="title">SIMULAR FRETAMENTO</p>
 						<div class="search-form">
 							<form>
+								<label class="label-input-search" for="roundtrip">TIPO DE TRANSPORTE</label>
+								<div class="row">
+										<div class="col-sm-6">
+											<div class="mdc-form-field">
+												<div class="mdc-radio">
+													<input 
+														class="mdc-radio__native-control" 
+														value="passengers_transport" 
+														type="radio" 
+														id="passengers_transport" 
+														name="radios" 
+														checked
+													>
+													<div class="mdc-radio__background">
+														<div class="mdc-radio__outer-circle"></div>
+														<div class="mdc-radio__inner-circle"></div>
+													</div>
+													<div class="mdc-radio__ripple"></div>
+												</div>
+												<label for="roundtrip">Passageiro / UTI Aérea</label>
+												<div class="mdc-radio">
+													<input 
+														class="mdc-radio__native-control" 
+														value="aeromedical_transport" 
+														type="radio" 
+														id="aeromedical_transport" 
+														name="radios"
+													>
+													<div class="mdc-radio__background">
+														<div class="mdc-radio__outer-circle"></div>
+														<div class="mdc-radio__inner-circle"></div>
+													</div>
+													<div class="mdc-radio__ripple"></div>
+												</div>
+												<label  for="oneway">UTI Aérea</label>
+											</div>
+										</div>
+								</div>
 								<div class="row">
 										<div class="col-sm-6">
 												<div class="form-group">
@@ -382,45 +420,6 @@
 															<i class="fas fa-plane-arrival"></i>
 														</div>
 												</div>
-										</div>
-								</div>
-
-								<label class="label-input-search" for="roundtrip">TIPO DE TRANSPORTE</label>
-								<div class="row">
-										<div class="col-sm-6">
-											<div class="mdc-form-field">
-												<div class="mdc-radio">
-													<input 
-														class="mdc-radio__native-control" 
-														value="passengers_transport" 
-														type="radio" 
-														id="passengers_transport" 
-														name="radios" 
-														checked
-													>
-													<div class="mdc-radio__background">
-														<div class="mdc-radio__outer-circle"></div>
-														<div class="mdc-radio__inner-circle"></div>
-													</div>
-													<div class="mdc-radio__ripple"></div>
-												</div>
-												<label for="roundtrip">Passageiros</label>
-												<div class="mdc-radio">
-													<input 
-														class="mdc-radio__native-control" 
-														value="aeromedical_transport" 
-														type="radio" 
-														id="aeromedical_transport" 
-														name="radios"
-													>
-													<div class="mdc-radio__background">
-														<div class="mdc-radio__outer-circle"></div>
-														<div class="mdc-radio__inner-circle"></div>
-													</div>
-													<div class="mdc-radio__ripple"></div>
-												</div>
-												<label  for="oneway">Aeromédico</label>
-											</div>
 										</div>
 								</div>
 
