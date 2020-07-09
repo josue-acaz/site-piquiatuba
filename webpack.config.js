@@ -27,6 +27,8 @@ module.exports = {
   plugins: [
       new webpack.DefinePlugin({
           "process.env.API_URL": JSON.stringify("https://piquiatuba-api.herokuapp.com"),
+          "process.env.GOOGLE_API": JSON.stringify("https://maps.googleapis.com/maps/api"),
+          "process.env.API_KEY": JSON.stringify("AIzaSyDiGTLiKNW40Hcp9OEEFZ6lNZnD2U0zEGs"),
       })
   ]
 };

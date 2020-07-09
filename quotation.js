@@ -1,7 +1,9 @@
 const moment = require("moment");
+const momentTimeZone = require("moment-timezone");
 import swal from 'sweetalert';
 
 import api from './api';
+import googleApi from "./services/google/api";
 import utils from './utils';
 
 let userLocation = {};
@@ -165,11 +167,19 @@ class Quotation {
     this.results = document.getElementById("results");
 
     this.registerHandlers();
+    this.handleGetTimeZone();
+
   }
 
   async registerHandlers() {
     this.search(this.query);
     this.getCurrentUserLocation();
+  }
+
+  async handleGetTimeZone() {
+    const response = await googleApi.get(`/timezone/json?location=38.908133,-77.047119&timestamp=1458000000&key=AIzaSyDiGTLiKNW40Hcp9OEEFZ6lNZnD2U0zEGs`);
+    const timeZone = response.data;
+    const { timeZoneId } = timeZone;
   }
 
   async handleGetUserLocation(position) {
@@ -296,14 +306,25 @@ class Quotation {
       const headerArrivalTime = new Date(departure_date);
       headerArrivalTime.setMinutes(headerArrivalTime.getMinutes()+headerFlightTime);
       
+      // Calculo da hora de chegada
       const showTimeFormated = headerArrivalTime.toString().split(" ")[4];
       const showDateFormated = headerArrivalTime.toISOString().split("T")[0];
       const showDateTimeFormated = `${showDateFormated} ${showTimeFormated}`;
 
+      console.log(showDateTimeFormated);
+      const timezone_destination = destination._city.timezone;
+      const timezone_origin = origin._city.timezone;
+
+      let arrivalDatetime = new Date(showDateTimeFormated);
+
+      if(timezone_origin.gmt !== timezone_destination.gmt) {
+        arrivalDatetime.setHours(arrivalDatetime.getHours()+(timezone_destination.gmt-timezone_origin.gmt))
+      }
+
       // col stretch
       let pStretch = document.createElement('p');
       pStretch.setAttribute('style', 'font-size: 22px;');
-      let pStretchContent = `<strong>${moment(search_params.departure_date.toString().split(' ')[1], 'HH:mm:ss').format('HH:mm')}</strong> ${origin.oaci_code} <i class="fas fa-angle-right"></i> <strong>${moment(showDateTimeFormated.split(' ')[1], 'HH:mm:ss').format('HH:mm')}</strong> ${destination.oaci_code}`;
+      let pStretchContent = `<strong>${moment(search_params.departure_date.toString().split(' ')[1], 'HH:mm:ss').format('HH:mm')}</strong> ${origin.oaci_code} <i class="fas fa-angle-right"></i> <strong>${moment(arrivalDatetime).format('HH:mm')}</strong> ${destination.oaci_code}`;
       pStretch.innerHTML = pStretchContent;
       let pAerodrome = document.createElement('p');
       pAerodrome.setAttribute("class", "stretch");
