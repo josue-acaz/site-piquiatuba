@@ -585,7 +585,7 @@ class Quotation {
       let warning = document.createElement('p');
       warning.setAttribute('class', 'warning_airport_operation');
       warning.appendChild(document.createTextNode(`
-        Esta aeronave chegaria ao seu destino às ${moment(showDateTimeFormatedAirport.split(' ')[1], 'HH:mm:ss').format('HH:mm')}. Este aeroporto não recebe pousos de 18:00 a 05:59.
+        Esta aeronave chegaria ao seu destino às ${moment(aircraft.arrival_datetime.split(' ')[1], 'HH:mm:ss').format('HH:mm')}. Este aeroporto não recebe pousos de 18:00 a 05:59.
       `));
       colAirportTimeMode.appendChild(warning);
     }
