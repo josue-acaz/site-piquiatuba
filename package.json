@@ -33,7 +33,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "flatpickr": "^4.6.3",
-    "moment": "^2.26.0",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.31",
     "sweetalert": "^2.1.2"
   }
